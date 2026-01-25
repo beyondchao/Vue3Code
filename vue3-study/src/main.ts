@@ -9,12 +9,11 @@ import "virtual:svg-icons-register";
 import globalComponent from "@/components/index";
 import "@/styles/index.scss";
 
-const app = createApp(App);
 
+const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.use(globalComponent);
-
 app.use(ElementPlus, {
   locale: zhCn,
 });

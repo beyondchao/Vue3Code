@@ -9,19 +9,16 @@
 
 <script setup lang="ts">
 import { Plus, Edit } from "@element-plus/icons-vue";
-import request from "@/utils/request"
+import { reqLogin } from "./api/user";
 import { onMounted } from "vue";
 
 onMounted(() => {
-  request({
-    url: '/user/login',
-    method: 'post',
-    data: {
-      username: "ceshi1",
-      password: "1232456"
-    }
-  }).then(res => {
-    console.log("res",res)
+  reqLogin({
+    username: "ceshi1",
+    password: "123456"
+  }
+  ).then(res => {
+    console.log("res", res)
   })
 })
 

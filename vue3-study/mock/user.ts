@@ -41,7 +41,7 @@ export default [
   {
     url: "/api/user/login",
     method: "post",
-    response: ({ body }) => {
+    response: ({body}) => {
       const { username, password } = body;
       const checkUser = createUserList().find(
         (item) => item.username === username && item.password === password,

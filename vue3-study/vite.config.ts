@@ -2,10 +2,12 @@ import { fileURLToPath, URL } from "node:url";
 import { defineConfig, UserConfigExport, ConfigEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueDevTools from "vite-plugin-vue-devtools";
+import vueSetupExtend from 'vite-plugin-vue-setup-extend'
 //引入svg插件
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import path from "path";
 import { viteMockServe } from "vite-plugin-mock";
+
 
 // https://vite.dev/config/
 export default defineConfig(({ command }: ConfigEnv) => {
@@ -13,6 +15,7 @@ export default defineConfig(({ command }: ConfigEnv) => {
     plugins: [
       vue(),
       vueDevTools(),
+      vueSetupExtend(),
       createSvgIconsPlugin({
         iconDirs: [path.resolve(process.cwd(), "src/icons")],
         symbolId: "icon-[dir]-[name]",
