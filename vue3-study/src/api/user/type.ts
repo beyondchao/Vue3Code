@@ -5,8 +5,8 @@ export interface loginForm {
 }
 //登录接口返回胡数据类型
 interface dataType {
-    token: string,
-    message: string
+    token?: string,
+    message?: string
 }
 export interface loginResponseData {
     code: number,

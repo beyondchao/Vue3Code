@@ -1,2 +1,16 @@
 //引入清楚默认样式
-@use "./reset.scss"
+@use "./reset.scss";
+
+@font-face {
+  font-family: 'Noto Seritf';
+  src: url('@/assets/fonts/NotoSerifSC-VariableFont_wght.ttf') format('truetype');
+  font-display: swap;
+}
+
+/* 工具类定义 */
+.text-dancing {
+  font-family: "Noto Serif SC", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+}

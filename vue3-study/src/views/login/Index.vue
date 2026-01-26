@@ -1,59 +1,92 @@
 <template>
   <div class="login">
     <el-row>
-      <el-col :span="12" :xs="0">左侧变淡</el-col>
-      <el-col :span="12" :xs="24">
-        <div class="form">
-          <div class="title">
-            <div class="main-title">Hello</div>
-            <div class="sub-title">欢迎来到后台管理</div>
-          </div>
-          <div class="login-form">
-            <el-input v-model="form.username">
-              <svg-icon name="user"></svg-icon>
+      <el-col :span="12" :sm="0" :xs="0" :md="12"></el-col>
+      <el-col :span="12" :sm="24" :xs="24" :md="12">
+        <el-form class="form">
+          <el-form-item>
+            <div class="title">
+              <div class="main-title text-dancing">Hello</div>
+              <div class="sub-title text-dancing">欢迎来到后台管理</div>
+            </div>
+          </el-form-item>
+          <el-form-item>
+            <el-input v-model="form.username" :prefix-icon="User" placeholder="请输入用户名">
             </el-input>
-            <el-input type="password" v-model="form.password"></el-input>
-            <el-button @click="login">登录</el-button>
-          </div>
-        </div>
+          </el-form-item>
+          <el-form-item>
+            <el-input type="password" v-model="form.password" :prefix-icon="Lock" :show-password="true"
+              placeholder="请输入密码"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button :loading="loading" type="primary" @click="login" class="btn">登录</el-button>
+          </el-form-item>
+        </el-form>
       </el-col>
     </el-row>
   </div>
 </template>
+
 <script setup lang="ts" name="login">
 import { ref, reactive } from "vue"
 import { reqLogin } from "@/api/user"
-import type { loginForm } from "@/api/user/type"
+import type { loginForm, loginResponseData } from "@/api/user/type"
 import { useRouter } from "vue-router"
-import { ElMessage } from "element-plus"
+import { ElMessage, ElNotification } from "element-plus"
+import { User, Lock } from "@element-plus/icons-vue"
+import { useUserStore } from "@/stores/modules/user"
+import { getDayTime } from "@/utils/daytime"
 
+let userStore = useUserStore()
 let form: loginForm = reactive({
   password: "",
   username: ""
 })
-let router = useRouter()
-
-function login() {
+//加载状态
+let loading = ref(false);
+//获取路由实例
+let router = useRouter();
+async function login() {
   //发送登录表单
-  reqLogin(form).then(res => {
+  loading.value = true;
+  const res: loginResponseData = await reqLogin(form)
+  try {
     if (res.code === 200) {
       //密码正确
       let { data: { token } } = res
       //保存token
-      console.log(token)
+      userStore.setToken((token as string))
+      //结束加载状态
+      loading.value = false;
       //跳转首页
       router.push('/')
-    } else {
-      //密码错误
-      let { data: { message } } = res
-      ElMessage({
-        type: 'error',
-        message
+      //提示登录成功
+      ElNotification({
+        type: 'success',
+        message: getDayTime() + '，登录成功'
       })
+
+    } else {
+      //提示错误信息
+      let { data: { message } } = res
+      ElNotification({
+        type: 'error', message
+      })
+      //结束加载状态
+      loading.value = false;
     }
-  })
+  } catch (error) {
+    //提示登录失败
+    ElNotification({
+      type: 'error',
+      message: '登录失败'
+    })
+    //结束加载状态
+    loading.value = false;
+  }
 }
 </script>
+
 <style lang="scss" scoped>
 .login {
   width: 100%;
@@ -69,20 +102,21 @@ function login() {
 
   /* Fallback color */
   .form {
-    position: absolute;
-    top: 50%;
-    //transform: translateY(-50%);
-    right: 100px;
-    width: 30%;
-    background-color: $blue;
-    padding: 30px 0;
-
+    margin: 0 auto;
+    /* 水平居中 */
+    background-color: rgba(44, 49, 47, 0.9);
+    position: relative;
+    top: 30vh;
+    border-top-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+    padding: 30px;
+    width: 70%;
     .title {
       padding: 5px 10px;
 
       .main-title {
         color: $text-white;
-        font-size: 35px;
+        font-size: 40px;
         padding: 0 15px 15px 15px;
       }
 
@@ -92,23 +126,15 @@ function login() {
         padding: 10px 15px;
       }
     }
-
-    .login-form {
-      padding: 0 60px;
-
-      .el-input {
-        margin-top: 20px;
-        font-size: 18px;
-        height: 35px;
-      }
-
-      .el-button {
-        width: 100%;
-        text-align: center;
-        background-color: $light-blue;
-        color: $text-white;
-        margin-top: 20px;
-        font-size: 18px;
+    .btn {
+      width: 100%;
+      background-color: #08202e;
+      font-size: 16px;
+      color: aliceblue;
+    }
+    .el-input {
+      :deep(.el-input__inner) {
+        color: #1b0101ec;
       }
     }
   }
