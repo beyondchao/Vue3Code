@@ -3,18 +3,18 @@
     <el-row>
       <el-col :span="12" :sm="0" :xs="0" :md="12"></el-col>
       <el-col :span="12" :sm="24" :xs="24" :md="12">
-        <el-form class="form">
+        <el-form class="form" :model="form" label-position="top" :rules="rules" ref="loginFormRef">
           <el-form-item>
             <div class="title">
               <div class="main-title text-dancing">Hello</div>
               <div class="sub-title text-dancing">欢迎来到后台管理</div>
             </div>
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="username">
             <el-input v-model="form.username" :prefix-icon="User" placeholder="请输入用户名">
             </el-input>
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="password">
             <el-input type="password" v-model="form.password" :prefix-icon="Lock" :show-password="true"
               placeholder="请输入密码"></el-input>
           </el-form-item>
@@ -31,11 +31,13 @@
 import { ref, reactive } from "vue"
 import { reqLogin } from "@/api/user"
 import type { loginForm, loginResponseData } from "@/api/user/type"
+import type { FormInstance } from "element-plus"
 import { useRouter } from "vue-router"
 import { ElMessage, ElNotification } from "element-plus"
 import { User, Lock } from "@element-plus/icons-vue"
 import { useUserStore } from "@/stores/modules/user"
 import { getDayTime } from "@/utils/daytime"
+
 
 let userStore = useUserStore()
 let form: loginForm = reactive({
@@ -46,7 +48,57 @@ let form: loginForm = reactive({
 let loading = ref(false);
 //获取路由实例
 let router = useRouter();
+//获取表单实例
+const loginFormRef = ref<FormInstance>();
+// 自定义验证函数
+const validatePassword = (rule: any, value: any, callback: any) => {
+  if (value === '') {
+    callback(new Error('请输入密码'))
+  } else if (value.length < 6) {
+    callback(new Error('密码至少6位'))
+  } else if (value.length > 16) {
+    callback(new Error('密码最多16位'))
+  } else if (!/^[a-zA-Z0-9_@#$%^&*]+$/.test(value)) {
+    callback(new Error('密码只能包含字母、数字、下划线和特殊字符!@#$%^&*'))
+  } else {
+    callback() // 验证通过
+  }
+}
+//定义表单校验对象
+let rules = reactive({
+  username: [
+    { required: true, message: "请输入用户名", trigger: "blur" }
+  ],
+  password: [
+    { validator: validatePassword, trigger: "change" },
+    { required: true, message: "请输入密码", trigger: "blur" }
+  ]
+})
+
 async function login() {
+  //表单校验
+  if (!loginFormRef.value) return
+  try {
+    let valid = await loginFormRef.value?.validate();
+    if (valid) {
+      //校验通过，发送登录请求
+      sendLogin()
+    } else {
+      //校验不通过
+      ElMessage({
+        type: "warning",
+        message: "请填写完整的登录信息"
+      })
+    }
+  } catch (error) {
+    //校验不通过
+    ElMessage({
+      type: "warning",
+      message: "请填写完整的登录信息"
+    })
+  }
+}
+async function sendLogin() {
   //发送登录表单
   loading.value = true;
   const res: loginResponseData = await reqLogin(form)
@@ -65,7 +117,6 @@ async function login() {
         type: 'success',
         message: getDayTime() + '，登录成功'
       })
-
     } else {
       //提示错误信息
       let { data: { message } } = res
@@ -85,6 +136,8 @@ async function login() {
     loading.value = false;
   }
 }
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -111,6 +164,7 @@ async function login() {
     border-bottom-right-radius: 14px;
     padding: 30px;
     width: 70%;
+
     .title {
       padding: 5px 10px;
 
