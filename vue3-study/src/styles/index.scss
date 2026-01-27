@@ -14,3 +14,12 @@
   font-weight: weight;
   font-style: normal;
 }
+
+::-webkit-scrollbar {
+  width: 15px;
+  height: 8px;
+  background: #e4e1e1;
+}
+::-webkit-scrollbar-thumb {
+  background: #a7a7aa;
+}

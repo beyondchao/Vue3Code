@@ -1,12 +1,28 @@
 <template>
-  <div class="">
-    首页
+  <div class="home">
+    <layout-default></layout-default>
   </div>
 </template>
-<script setup lang="ts" name="home123">
-import {ref,reactive} from "vue"
 
+<script setup lang="ts" name="home">
+import { ref, reactive, computed } from 'vue'
+import LayoutDefault from '@/layout/LayoutDefault.vue'
+// 响应式状态
+const state = ref<string>('')
+
+// 计算属性
+// const computedValue = computed(() => {
+//   return state.value
+// })
+
+// 方法
+// const handleClick = () => {
+//   console.log('click')
+// }
 </script>
-<style lang="scss" scoped>
 
+<style lang="scss" scoped>
+.home {
+  // 样式
+}
 </style>
