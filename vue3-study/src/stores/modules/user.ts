@@ -1,11 +1,13 @@
 //创建用户相关仓库
 import { defineStore } from "pinia";
 import { setToken, getToken } from "@/utils/token"
+import { constantRoute } from "@/router/routes";
 
 export const useUserStore = defineStore("user", {
     state: () => {
         return {
-            token: getToken()
+            token: getToken(), //用户登录token
+            menuRoute: constantRoute //用户菜单路由
         }
     },
     getters: {},

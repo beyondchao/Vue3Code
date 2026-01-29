@@ -152,7 +152,6 @@ async function sendLogin() {
   background-attachment: fixed;
   /* Creates a parallax effect */
   background-color: #cccccc;
-
   /* Fallback color */
   .form {
     margin: 0 auto;
@@ -163,17 +162,14 @@ async function sendLogin() {
     border-top-left-radius: 14px;
     border-bottom-right-radius: 14px;
     padding: 30px;
-    width: 70%;
-
+    width: 60%;
     .title {
       padding: 5px 10px;
-
       .main-title {
         color: $text-white;
         font-size: 40px;
         padding: 0 15px 15px 15px;
       }
-
       .sub-title {
         color: $text-white;
         font-size: 20px;

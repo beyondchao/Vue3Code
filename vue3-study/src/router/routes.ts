@@ -1,6 +1,15 @@
-import path from 'path';
 
-export const constantRoute = [
+// 导入图标组件
+import {
+  HomeFilled,
+  Platform,
+  Lock,
+  Goods,
+} from '@element-plus/icons-vue'
+import path from 'path'
+import { markRaw } from 'vue'
+
+const routeData = [
   {
     path: '/login',
     component: () => import('@/views/login/Index.vue'),
@@ -8,15 +17,132 @@ export const constantRoute = [
   },
   {
     path: '/',
-    component: () => import('@/views/home/Index.vue'),
-    name: 'home'
-  }, {
+    name: 'index',
+    redirect: '/home',
+    children: [
+      {
+        name: "home",
+        path: "/home",
+        component: () => import('@/layout/LayoutDefault.vue'),
+        children: [
+          {
+            path: '/home/welcome',
+            component: () => import('@/views/home/Welcome.vue'),
+            meta: {
+              title: "首页",
+              showInMenu: true,
+              icon: markRaw(HomeFilled),
+            }
+          }
+        ]
+      },
+      {
+        name: "data-screen",
+        path: "/data-screen",
+        component: () => import('@/views/screen/Index.vue'),
+        meta: {
+          title: "数据大屏",
+          icon: markRaw(Platform),
+        }
+      },
+      {
+        name: "acl",
+        path: "/acl",
+        component: () => import('@/layout/LayoutDefault.vue'),
+        meta: {
+          title: "权限管理",
+          icon: markRaw(Lock),
+          showInMenu: true,
+        },
+        children: [
+          {
+            path: "/permission",
+            component: () => import('@/views/acl/permission/Index.vue'),
+            meta: {
+              title: "权限管理",
+              showInMenu: true,
+            }
+          },
+          {
+            name: "用户管理",
+            path: "/user",
+            component: () => import('@/views/acl/user/Index.vue'),
+            meta: {
+              title: "用户管理",
+              showInMenu: true,
+            }
+          },
+          {
+            name: "角色管理",
+            path: "/role",
+            component: () => import('@/views/acl/role/Index.vue'),
+            meta: {
+              title: "角色管理",
+              showInMenu: true,
+            }
+          }
+        ]
+      },
+      {
+        name: "goods",
+        path: "/goods",
+        component: () => import('@/layout/LayoutDefault.vue'),
+        meta: {
+          title: "商品管理",
+          icon: markRaw(Goods),
+          showInMenu: true,
+        },
+        children: [
+          {
+            name: "SPU管理",
+            path: "/spu",
+            component: () => import('@/views/product/spu/Index.vue'),
+            meta: {
+              title: "SPU管理",
+              showInMenu: true,
+            }
+          },
+          {
+            name: "SKU管理",
+            path: "/sku",
+            component: () => import('@/views/product/sku/Index.vue'),
+            meta: {
+              title: "SKU管理",
+              showInMenu: true,
+            }
+          },
+          {
+            name: "属性管理",
+            path: "/attribute",
+            component: () => import('@/views/product/attribute/Index.vue'),
+            meta: {
+              title: "属性管理",
+              showInMenu: true,
+            }
+          },
+          {
+            name: "贸易管理",
+            path: "/trade",
+            component: () => import('@/views/product/tradeMark/Index.vue'),
+            meta: {
+              title: "贸易管理",
+              showInMenu: true,
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     path: '/404',
     component: () => import('@/views/404/Index.vue'),
-    name: '404'
-  }, {
+    name: '404',
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/404',
-    name: 'any'
+    name: 'any',
   }
 ]
+
+export const constantRoute = markRaw(routeData)
