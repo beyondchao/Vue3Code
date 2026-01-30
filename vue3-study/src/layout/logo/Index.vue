@@ -1,6 +1,6 @@
 <template>
   <div class="logo">
-    <div div class="logo-container">
+    <div class="logo-container">
         <img v-if="!setting.isLogoHidden" :src="setting.logo" alt="" class="logo-img">
         <p>{{ setting.title }}</p>
     </div>
@@ -20,19 +20,23 @@ import setting from '@/setting'
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
-    padding: 15px 0;
+    justify-content: flex-start;
+    padding: 5px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    flex: 0 0 auto;
     .logo-img {
         width: $navibar-logo-height;
         height: auto;
         color: white;
-        margin-right: 10px;
+        margin-left: 15px;
     }
     p{
         color: #ffffff;
         text-align: center;
         font-size: $navibar-logo-font-size;
+        white-space: nowrap;
+        position: absolute;
+        left: calc(#{$navibar-logo-height} + 32px);
     }
   }
   

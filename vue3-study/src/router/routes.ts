@@ -56,7 +56,7 @@ const routeData = [
         },
         children: [
           {
-            path: "/permission",
+            path: "/acl/permission",
             component: () => import('@/views/acl/permission/Index.vue'),
             meta: {
               title: "权限管理",
@@ -65,7 +65,7 @@ const routeData = [
           },
           {
             name: "用户管理",
-            path: "/user",
+            path: "/acl/user",
             component: () => import('@/views/acl/user/Index.vue'),
             meta: {
               title: "用户管理",
@@ -74,7 +74,7 @@ const routeData = [
           },
           {
             name: "角色管理",
-            path: "/role",
+            path: "/acl/role",
             component: () => import('@/views/acl/role/Index.vue'),
             meta: {
               title: "角色管理",
@@ -95,7 +95,7 @@ const routeData = [
         children: [
           {
             name: "SPU管理",
-            path: "/spu",
+            path: "/goods/spu",
             component: () => import('@/views/product/spu/Index.vue'),
             meta: {
               title: "SPU管理",
@@ -104,7 +104,7 @@ const routeData = [
           },
           {
             name: "SKU管理",
-            path: "/sku",
+            path: "/goods/sku",
             component: () => import('@/views/product/sku/Index.vue'),
             meta: {
               title: "SKU管理",
@@ -113,7 +113,7 @@ const routeData = [
           },
           {
             name: "属性管理",
-            path: "/attribute",
+            path: "/goods/attribute",
             component: () => import('@/views/product/attribute/Index.vue'),
             meta: {
               title: "属性管理",
@@ -122,7 +122,7 @@ const routeData = [
           },
           {
             name: "贸易管理",
-            path: "/trade",
+            path: "/goods/trade",
             component: () => import('@/views/product/tradeMark/Index.vue'),
             meta: {
               title: "贸易管理",

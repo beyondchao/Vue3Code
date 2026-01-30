@@ -1,17 +1,19 @@
 <template>
     <div class="home">
         <!-- 左侧菜单 -->
-        <aside class="navigation-bar">
+        <aside class="navigation-bar" :class="{collapsed: isCollapse}">
             <Logo></Logo>
             <!-- 展示菜单 -->
             <el-scrollbar class="scrollbar-demo">
-                <SideMenu :menuRoute="menuRoute"></SideMenu>
+                <SideMenu :menuRoute="menuRoute" :collapse="isCollapse"></SideMenu>
             </el-scrollbar>
         </aside>
         <!-- 右侧内容区域 -->
         <div class="content">
             <!-- 顶部导航栏 -->
-            <header class="header"></header>
+            <header class="header">
+                <Tabbar></Tabbar>
+            </header>
             <!-- 主要内容区域 -->
             <main class="main-content">
                 <!-- Main Content -->
@@ -21,13 +23,19 @@
     </div>
 </template>
 <script setup lang="ts" name="home">
+import { ref } from 'vue';
 import Main from '@/layout/main/Index.vue'
 import Logo from '@/layout/logo/Index.vue'
 import SideMenu from '@/layout/menu/index.vue'
+import Tabbar from '@/layout/tabbar/Index.vue'
 import { useUserStore } from "@/stores/modules/user"
 let userStore = useUserStore();
 let menuRoute = userStore.menuRoute.find(item => item.name === 'index')?.children || [];
+let isCollapse = ref(false);
 </script>
+
+
+
 <style lang="scss" scoped>
 .home {
     min-height: 100vh;
@@ -46,7 +54,9 @@ let menuRoute = userStore.menuRoute.find(item => item.name === 'index')?.childre
         color: $text-white;
         overflow: auto;
         min-height: 100vh;
-
+        &.collapsed {
+            width: $navibar-collapsed-width;
+        }
         // 侧边菜单样式
         .scrollbar-demo {
             height: calc(100vh - $navibar-logo-height);
@@ -66,15 +76,13 @@ let menuRoute = userStore.menuRoute.find(item => item.name === 'index')?.childre
             left: $navibar-width;
             right: 0;
             height: $header-height;
-            background-color: $navibar-bg-color;
             z-index: 100;
             top: 0;
             box-sizing: border-box;
         }
         .main-content {
-            // flex: 1 1 auto;
-            position: relative;
-            left: $navibar-width;
+            flex: 1 1 auto;
+            margin-left: $navibar-width;
             background: #f5f2f2;
             height: 1000vh;
             padding: 15px;
