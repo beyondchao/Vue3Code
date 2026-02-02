@@ -32,7 +32,7 @@ import { ref, reactive } from "vue"
 import { reqLogin } from "@/api/user"
 import type { loginForm, loginResponseData } from "@/api/user/type"
 import type { FormInstance } from "element-plus"
-import { useRouter } from "vue-router"
+import { useRouter, useRoute } from "vue-router"
 import { ElMessage, ElNotification } from "element-plus"
 import { User, Lock } from "@element-plus/icons-vue"
 import { useUserStore } from "@/stores/modules/user"
@@ -48,14 +48,15 @@ let form: loginForm = reactive({
 let loading = ref(false);
 //获取路由实例
 let router = useRouter();
+let route = useRoute();
 //获取表单实例
 const loginFormRef = ref<FormInstance>();
 // 自定义验证函数
 const validatePassword = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('请输入密码'))
-  } else if (value.length < 6) {
-    callback(new Error('密码至少6位'))
+  } else if (value.length < 5) {
+    callback(new Error('密码至少5位'))
   } else if (value.length > 16) {
     callback(new Error('密码最多16位'))
   } else if (!/^[a-zA-Z0-9_@#$%^&*]+$/.test(value)) {
@@ -101,17 +102,18 @@ async function login() {
 async function sendLogin() {
   //发送登录表单
   loading.value = true;
-  const res: loginResponseData = await reqLogin(form)
   try {
-    if (res.code === 200) {
+    const res: loginResponseData = await reqLogin(form)
+    // if (res.code === 200) {
+    if (res.msg === "ok") {
       //密码正确
       let { data: { token } } = res
       //保存token
       userStore.setToken((token as string))
       //结束加载状态
       loading.value = false;
-      //跳转首页
-      router.push('/')
+      //跳转首页或者登录前页面
+      router.replace(route.query.redirect as string || '/')
       //提示登录成功
       ElNotification({
         type: 'success',
@@ -119,14 +121,15 @@ async function sendLogin() {
       })
     } else {
       //提示错误信息
-      let { data: { message } } = res
+      let { msg } = res
       ElNotification({
-        type: 'error', message
+        type: 'error', message: msg
       })
       //结束加载状态
       loading.value = false;
     }
   } catch (error) {
+    console.error("登录请求出错", error);
     //提示登录失败
     ElNotification({
       type: 'error',
@@ -152,6 +155,7 @@ async function sendLogin() {
   background-attachment: fixed;
   /* Creates a parallax effect */
   background-color: #cccccc;
+
   /* Fallback color */
   .form {
     margin: 0 auto;
@@ -163,25 +167,30 @@ async function sendLogin() {
     border-bottom-right-radius: 14px;
     padding: 30px;
     width: 60%;
+
     .title {
       padding: 5px 10px;
+
       .main-title {
         color: $text-white;
         font-size: 40px;
         padding: 0 15px 15px 15px;
       }
+
       .sub-title {
         color: $text-white;
         font-size: 20px;
         padding: 10px 15px;
       }
     }
+
     .btn {
       width: 100%;
       background-color: #08202e;
       font-size: 16px;
       color: aliceblue;
     }
+
     .el-input {
       :deep(.el-input__inner) {
         color: #1b0101ec;

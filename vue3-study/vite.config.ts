@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from "node:url";
-import { defineConfig, UserConfigExport, ConfigEnv } from "vite";
+import { defineConfig, UserConfigExport, ConfigEnv, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueDevTools from "vite-plugin-vue-devtools";
 import vueSetupExtend from 'vite-plugin-vue-setup-extend'
@@ -10,7 +10,11 @@ import { viteMockServe } from "vite-plugin-mock";
 
 
 // https://vite.dev/config/
-export default defineConfig(({ command }: ConfigEnv) => {
+export default defineConfig(({ command, mode }: ConfigEnv) => {
+
+  //获取当前环境的变量
+  let env = loadEnv(mode, process.cwd());
+  console.log(`当前环境：${mode}`);
   return {
     plugins: [
       vue(),
@@ -50,6 +54,22 @@ export default defineConfig(({ command }: ConfigEnv) => {
           additionalData: `@use "@/styles/variable.scss" as *;`,
         },
       },
+    },
+    server: {
+      proxy: {
+        [env.VITE_APP_BASE_API]: {
+          //获取环境变量中的代理地址
+          target: env.VITE_SERVER,
+          //需要代理跨域
+          changeOrigin: true,
+          //路径重写
+          rewrite: (path: string) => {
+            const newPath = path.replace(new RegExp(`^${env.VITE_APP_BASE_API}`), '');
+            //console.log(`代理路径重写：${path} => ${newPath}`);
+            return newPath;
+          }
+        }
+      }
     }
   };
 });

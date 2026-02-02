@@ -15,9 +15,9 @@
                 <Tabbar></Tabbar>
             </header>
             <!-- 主要内容区域 -->
-            <main class="main-content">
+            <main class="main-content" >
                 <!-- Main Content -->
-                <Main></Main>
+                <Main> </Main>
             </main>
         </div>
     </div>
@@ -27,13 +27,11 @@ import { ref } from 'vue';
 import Main from '@/layout/main/Index.vue'
 import Logo from '@/layout/logo/Index.vue'
 import SideMenu from '@/layout/menu/index.vue'
+import { useTabbarStore } from "@/stores/modules/tabbar"
 import Tabbar from '@/layout/tabbar/Index.vue'
-import { useUserStore } from "@/stores/modules/user"
-import { useTabbarstore } from "@/stores/modules/tabbar"
 
-let userStore = useUserStore();
-let tabbarStore = useTabbarstore();
-let menuRoute = userStore.menuRoute.find(item => item.name === 'index')?.children || [];
+let tabbarStore = useTabbarStore();
+let menuRoute = tabbarStore.menuRoute.find(item => item.name === 'index')?.children || [];
 
 </script>
 
@@ -89,7 +87,7 @@ let menuRoute = userStore.menuRoute.find(item => item.name === 'index')?.childre
             flex: 1 1 auto;
             margin-left: $navibar-width;
             background: #f5f2f2;
-            height: 1000vh;
+            // height: 1000vh;
             padding: 15px;
             margin-top: $header-height;
             transition: all 0.3s;

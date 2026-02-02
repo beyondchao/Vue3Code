@@ -5,11 +5,10 @@ export interface loginForm {
 }
 //登录接口返回胡数据类型
 interface dataType {
-    token?: string,
-    message?: string
+    token?: string
 }
 export interface loginResponseData {
-    code: number,
+    msg: string,
     data: dataType
 }
 //定义服务器返回用户信息相关胡数据类型
@@ -17,24 +16,28 @@ interface role {
     id: number,
     name: string
 }
+interface menus {
+    id: number,
+    rule_id: number,
+    status: number,
+    create_time: string,
+    update_time: string,
+}
 interface userInfo {
     id: number,
-    status: number,
-      create_time: string,
-      update_time: string,
-      username: string,
-      password: string,
-      avatar: string,
-      role_id: number,
-      super: number,
-      route: string[],
-      token: string,
-      role: role
-}
-interface user {
-    checkUser: userInfo
+    username: string,
+    avatar: string,
+    super: number,
+    role: role,
+    menus: menus,
 }
 export interface userResponseData {
-    code: number,
-    data: user
+    msg: string,
+    data: userInfo
+}
+//退出登录相应数据类型
+export interface logoutResponseData {
+    msg: string,
+    data: string,
+    errorCode: number
 }

@@ -1,12 +1,12 @@
 <template>
     <div class="setting">
         <div class="setting-item">
-            <div class="icon-container">
+            <div class="icon-container" @click="handleRefresh">
                 <el-icon>
                     <Refresh />
                 </el-icon>
             </div>
-            <div class="icon-container">
+            <div class="icon-container" @click="handleFullScreen">
                 <el-icon>
                     <FullScreen />
                 </el-icon>
@@ -20,18 +20,18 @@
         </div>
         <div class="logout">
             <div>
-                <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+                <el-avatar :src="userStore.avatar" />
             </div>
             <el-dropdown>
                 <span class="el-dropdown-link">
-                    admin
+                    {{userStore.username}}
                     <el-icon class="el-icon--right">
                         <arrow-down />
                     </el-icon>
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item>登出</el-dropdown-item>
+                        <el-dropdown-item @click="handleLogout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -40,8 +40,41 @@
 </template>
 
 <script setup lang="ts">
-import { Refresh, FullScreen, Setting } from '@element-plus/icons-vue';
-</script>
+import { Refresh, FullScreen, Setting, ArrowDown } from '@element-plus/icons-vue';
+import { useTabbarStore } from '@/stores/modules/tabbar';
+import  { useUserStore } from '@/stores/modules/user';
+import { useRouter, useRoute } from "vue-router";
+
+let tabbarStore = useTabbarStore();
+let userStore = useUserStore();
+let router = useRouter();
+let route = useRoute();
+
+function handleRefresh() {
+    // Trigger page refresh in tabbar store
+    tabbarStore.refreshPage();
+}
+function handleFullScreen() {
+    // Toggle fullscreen mode
+    if (!document.fullscreenElement) {
+        //进入全屏
+        document.documentElement.requestFullscreen();
+    } else {
+        if (document.exitFullscreen) {
+            //退出全屏
+            document.exitFullscreen();
+        }
+    }
+}
+async function handleLogout() {
+    // Handle user logout
+    await userStore.logout();
+    if (route.name !== 'login') {
+        // Redirect to login page
+        router.replace({ name: 'login', query: { redirect: route.fullPath } });
+    }
+}
+</script>   
 
 <style scoped lang="scss">
 .setting {
@@ -64,6 +97,9 @@ import { Refresh, FullScreen, Setting } from '@element-plus/icons-vue';
             height: 30px;
             align-items: center;
             justify-content: center;
+            &:hover {
+                background-color: #f0f0f0;
+            }
         }
     }
     .logout {
@@ -76,6 +112,11 @@ import { Refresh, FullScreen, Setting } from '@element-plus/icons-vue';
 
         .el-avatar {
             margin-right: 8px;
+            user-select: none;
+        }
+        .el-dropdown-link {
+            cursor: pointer;
+            user-select: none;
         }
     }
 }

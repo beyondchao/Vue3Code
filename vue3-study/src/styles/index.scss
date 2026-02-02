@@ -20,6 +20,24 @@
   height: 8px;
   background: #e4e1e1;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #a7a7aa;
+}
+
+/* 主进度条颜色 */
+#nprogress .bar {
+  background: #ff0000 !important;
+  height: 1px;
+}
+
+/* 进度条端点阴影 */
+#nprogress .peg {
+  box-shadow: 0 0 10px #ff0000, 0 0 5px #ff0000 !important;
+}
+
+/* 旋转加载图标 */
+#nprogress .spinner-icon {
+  border-top-color: #ff0000 !important;
+  border-left-color: #ff0000 !important;
 }

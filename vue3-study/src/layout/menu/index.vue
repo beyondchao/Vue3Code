@@ -10,7 +10,7 @@
                     >
                     <template v-for="(item, menuindex) in sideMenu" :key="menuindex">
                         <!-- 单独菜单项 -->
-                        <el-menu-item :index="item.path"
+                        <el-menu-item :index="item.children[0].path"
                             v-if="item.children && item.children.length === 1 && item.children[0].meta.showInMenu !== false"
                             @click="handClick(item.children[0])">
                             <!-- 菜单项图标 -->
@@ -19,6 +19,7 @@
                             </el-icon>
                             <template #title>
                                 <!-- 菜单项标题 -->
+                                
                                 <span class="text-dancing">{{ item.children[0].meta.title }}</span>
                             </template>
                         </el-menu-item>
@@ -91,6 +92,11 @@ function handClick(item: any) {
         .popper-class .el-menu-item {
             color: #fff !important;
     }
+.tac {
+    .el-menu {
+        border: none;
+    }
+}
 </style>
 
 <style lang="scss" scoped>

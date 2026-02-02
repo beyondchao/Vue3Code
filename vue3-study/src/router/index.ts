@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { constantRoute } from './routes'
-import { getToken } from '@/utils/token'
+import { permissionRouter } from './permission'
+
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: constantRoute,
@@ -11,16 +12,7 @@ const router = createRouter({
     }
   }
 })
-// 如果没有登录，默认跳转到登录页
-router.beforeEach((to, from, next) => {
-  const token = getToken()
-  if (!token && to.path !== '/login') {
-    next('/login')  // 默认跳转登录
-  } else if (token && to.path === '/login') {
-    next('/')  // 已经登录的话，跳转到首页
-  }
-  else {
-    next()
-  }
-})
+//配置路由权限
+permissionRouter(router)
+//导出路由实例
 export default router

@@ -6,7 +6,6 @@ import {
   Lock,
   Goods,
 } from '@element-plus/icons-vue'
-import path from 'path'
 import { markRaw } from 'vue'
 
 const routeData = [
@@ -18,12 +17,12 @@ const routeData = [
   {
     path: '/',
     name: 'index',
-    redirect: '/home',
+    redirect: '/home/welcome',
     children: [
       {
         name: "home",
         path: "/home",
-        component: () => import('@/layout/LayoutDefault.vue'),
+        component: () => import('@/views/home/Index.vue'),
         children: [
           {
             path: '/home/welcome',
@@ -48,7 +47,7 @@ const routeData = [
       {
         name: "acl",
         path: "/acl",
-        component: () => import('@/layout/LayoutDefault.vue'),
+        component: () => import('@/views/home/Index.vue'),
         meta: {
           title: "权限管理",
           icon: markRaw(Lock),
@@ -86,7 +85,7 @@ const routeData = [
       {
         name: "goods",
         path: "/goods",
-        component: () => import('@/layout/LayoutDefault.vue'),
+        component: () => import('@/views/home/Index.vue'),
         meta: {
           title: "商品管理",
           icon: markRaw(Goods),
