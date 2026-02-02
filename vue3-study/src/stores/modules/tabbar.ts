@@ -12,6 +12,9 @@ export const useTabbarstore = defineStore("tabbar", {
     actions: {
         toggleCollapse() {
             this.isFolded = !this.isFolded;
+        },
+        setRefresh() {
+            this.refresh = !this.refresh;
         }
     }
 });
