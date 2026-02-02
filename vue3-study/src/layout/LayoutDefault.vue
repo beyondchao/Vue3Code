@@ -1,15 +1,15 @@
 <template>
     <div class="home">
         <!-- 左侧菜单 -->
-        <aside class="navigation-bar" :class="{collapsed: isCollapse}">
+        <aside class="navigation-bar" :class="{collapsed: tabbarStore.isFolded}">
             <Logo></Logo>
             <!-- 展示菜单 -->
             <el-scrollbar class="scrollbar-demo">
-                <SideMenu :menuRoute="menuRoute" :collapse="isCollapse"></SideMenu>
+                <SideMenu :menuRoute="menuRoute" :collapse="tabbarStore.isFolded"></SideMenu>
             </el-scrollbar>
         </aside>
         <!-- 右侧内容区域 -->
-        <div class="content">
+        <div class="content" :class="{collapsed: tabbarStore.isFolded}">
             <!-- 顶部导航栏 -->
             <header class="header">
                 <Tabbar></Tabbar>
@@ -29,9 +29,12 @@ import Logo from '@/layout/logo/Index.vue'
 import SideMenu from '@/layout/menu/index.vue'
 import Tabbar from '@/layout/tabbar/Index.vue'
 import { useUserStore } from "@/stores/modules/user"
+import { useTabbarstore } from "@/stores/modules/tabbar"
+
 let userStore = useUserStore();
+let tabbarStore = useTabbarstore();
 let menuRoute = userStore.menuRoute.find(item => item.name === 'index')?.children || [];
-let isCollapse = ref(false);
+
 </script>
 
 
@@ -54,6 +57,7 @@ let isCollapse = ref(false);
         color: $text-white;
         overflow: auto;
         min-height: 100vh;
+        transition: all 0.3s;
         &.collapsed {
             width: $navibar-collapsed-width;
         }
@@ -79,6 +83,7 @@ let isCollapse = ref(false);
             z-index: 100;
             top: 0;
             box-sizing: border-box;
+            transition: all 0.3s;
         }
         .main-content {
             flex: 1 1 auto;
@@ -87,6 +92,15 @@ let isCollapse = ref(false);
             height: 1000vh;
             padding: 15px;
             margin-top: $header-height;
+            transition: all 0.3s;
+        }
+        &.collapsed {
+            .header {
+                left: $navibar-collapsed-width;
+            }
+            .main-content {
+                margin-left: $navibar-collapsed-width;
+            }
         }
     }
 

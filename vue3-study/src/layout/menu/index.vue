@@ -6,7 +6,7 @@
                 <!-- 菜单栏 -->
                 <el-menu :default-active="$route.path" class="el-menu-vertical-demo" active-text-color="#ffd04b"
                     background-color="transparent" text-color="#fff" 
-                    popper-class="popper-class" :collapse="isCollapse"
+                    popper-class="popper-class" :collapse="collapse"
                     >
                     <template v-for="(item, menuindex) in sideMenu" :key="menuindex">
                         <!-- 单独菜单项 -->
@@ -62,7 +62,6 @@ import { useRouter, useRoute } from 'vue-router';
 const { menuRoute, collapse } = defineProps<{ menuRoute?: any, collapse?: boolean }>();
 const router = useRouter();
 const $route = useRoute();
-let isCollapse = collapse || false;
 // 菜单数据
 const sideMenu = menuRoute;
 

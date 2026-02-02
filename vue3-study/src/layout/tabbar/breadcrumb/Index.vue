@@ -1,7 +1,8 @@
 <template>
     <div class="breadcrumb-container">
         <el-icon>
-            <Fold />
+            <!-- Toggle icon based on isFolded state -->
+            <component :is="tabbarStore.isFolded ? Expand : Fold" @click="tabbarStore.toggleCollapse()" />
         </el-icon>
         <div class="breadcrumb">
             <el-breadcrumb :separator-icon="ArrowRight">
@@ -14,12 +15,13 @@
 
 <script setup lang="ts">
 // component logic
-import { Fold , ArrowRight} from '@element-plus/icons-vue';
-
+import { Fold , Expand, ArrowRight} from '@element-plus/icons-vue';
+import  useTabbarstore  from '@/stores/modules/tabbar';
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
-const $route = useRoute();
 
+const $route = useRoute();
+let tabbarStore = useTabbarstore();
 let routeInfo = computed(() => {
     let tempInfo = [];
     const matched = ($route as any)?.matched;
