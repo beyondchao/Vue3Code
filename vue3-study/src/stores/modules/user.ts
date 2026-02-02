@@ -11,6 +11,7 @@ export const useUserStore = defineStore("user", {
             username: "", //用户名
             avatar: "", //用户头像
             buttons: [] as string[], //用户按钮权限
+            isLoggingOut: false, //正在登出，防止重复调用
         }
     },
     getters: {},
@@ -33,8 +34,12 @@ export const useUserStore = defineStore("user", {
             }
         },
         async logout() {
-            //退出登录，清除token与用户信息
+            // 防止重复调用logout
+            if (this.isLoggingOut) return;
+
+            this.isLoggingOut = true;
             try {
+                //退出登录，清除token与用户信息
                 let res = await reqLogout();
                 if (res.msg === "ok") {
                     this.token = "";
@@ -42,12 +47,17 @@ export const useUserStore = defineStore("user", {
                     this.avatar = "";
                     removeToken();
                 }
-            } catch (error) {
+            } catch (error: any) {
                 console.error("退出登录失败", error);
+                // 如果token过期（401）或其他错误，直接清除本地状态
+                // 此时响应拦截器会处理跳转逻辑
+                this.token = "";
+                this.username = "";
+                this.avatar = "";
+                removeToken();
+            } finally {
+                this.isLoggingOut = false;
             }
-            
-
-           
         }
     }
 });

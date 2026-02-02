@@ -28,7 +28,7 @@ request.interceptors.response.use(
     // console.log("✅ 响应成功:", response.data)
     return response.data;
   },
-  (error) => {
+  async (error) => {
     //失败回调，处理http网络错误
     //定义变量存储网络错误信息
     // console.log("❌ 请求错误详情:", {
@@ -38,12 +38,31 @@ request.interceptors.response.use(
     // })
     let message = "";
     let status = error.response?.status;
+    
+    // 判断是否为 logout 请求
+    const isLogoutRequest = error.config?.url?.includes('/logout');
+    
     switch (status) {
       case 400:
         message = "请求参数错误";
         break;
       case 401:
-        message = "TOKEN过期";
+        message = "TOKEN过期，请重新登录";
+        // TOKEN过期或无效
+        let userStore = useUserStore();
+        // 如果不是logout请求本身失败，则调用logout
+        // 如果是logout请求本身失败，直接清除状态（避免死循环）
+        if (!isLogoutRequest) {
+          await userStore.logout();
+        } else {
+          userStore.token = "";
+          userStore.username = "";
+          userStore.avatar = "";
+          // 直接清除localStorage避免状态不同步
+          localStorage.removeItem("token");
+        }
+        // 跳转登录页
+        window.location.href = "/login";
         break;
       case 403:
         message = "无权访问";
