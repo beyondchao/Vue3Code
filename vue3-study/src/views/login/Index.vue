@@ -149,7 +149,7 @@ async function sendLogin() {
   height: 100vh;
   // 融合背景图片和渐变效果
   background: 
-    linear-gradient(135deg, rgba(102, 126, 234, 0.85) 0%, rgba(118, 75, 162, 0.85) 100%),
+    linear-gradient(135deg, rgba(102, 126, 234, 0.95) 30%, rgba(118, 75, 162, 0.85) 90%),
     url("@/assets/login/back.jpg");
   background-repeat: no-repeat;
   background-position: center;

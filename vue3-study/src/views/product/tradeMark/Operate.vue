@@ -86,7 +86,8 @@ const handleBatchDelete = async () => {
         display: flex;
         justify-content: space-between;
         margin-bottom: 20px;
-
+        overflow: hidden;
+        white-space: nowrap;
         .search {
             display: flex;
             align-items: center;
