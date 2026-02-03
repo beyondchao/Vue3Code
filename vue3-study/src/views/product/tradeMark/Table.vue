@@ -59,7 +59,7 @@
                         </span>
                     </template>
                 </el-table-column>
-                <el-table-column label="商品操作"  align="center" fixed="right">
+                <el-table-column label="商品操作"  align="center" fixed="right" width="150">
                     <template #default="{ row }">
                         <el-button size="small" type="primary" @click="handleEdit(row)">编辑</el-button>
                         <el-button size="small" type="danger" @click="handleDelete(row)">删除</el-button>

@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <el-row>
+    <el-row >
       <el-col :span="12" :sm="0" :xs="0" :md="12"></el-col>
       <el-col :span="12" :sm="24" :xs="24" :md="12">
         <el-form class="form" :model="form" label-position="top" :rules="rules" ref="loginFormRef">
@@ -19,7 +19,7 @@
               placeholder="请输入密码"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button :loading="loading" type="primary" @click="login" class="btn">登录</el-button>
+            <el-button :loading="loading" type="danger" @click="login" class="btn">登录</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -147,54 +147,102 @@ async function sendLogin() {
 .login {
   width: 100%;
   height: 100vh;
-  background-image: url("@/assets/login/back.jpg");
+  // 融合背景图片和渐变效果
+  background: 
+    linear-gradient(135deg, rgba(102, 126, 234, 0.85) 0%, rgba(118, 75, 162, 0.85) 100%),
+    url("@/assets/login/back.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  /* Ensures image covers the entire area */
   background-attachment: fixed;
-  /* Creates a parallax effect */
-  background-color: #cccccc;
-
-  /* Fallback color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .el-row {
+    width: 100%;
+  }
   .form {
     margin: 0 auto;
-    /* 水平居中 */
-    background-color: rgba(44, 49, 47, 0.9);
-    position: relative;
-    top: 30vh;
-    border-top-left-radius: 14px;
-    border-bottom-right-radius: 14px;
-    padding: 30px;
+    // 半透明白色背景，带毛玻璃效果
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    padding: 40px 50px;
     width: 60%;
+    max-width: 550px;
+    min-width: 420px;
 
     .title {
-      padding: 5px 10px;
+      padding: 5px 10px 20px;
+      text-align: center;
 
       .main-title {
-        color: $text-white;
-        font-size: 40px;
-        padding: 0 15px 15px 15px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 48px;
+        font-weight: bold;
+        padding: 0 15px 10px 15px;
       }
 
       .sub-title {
-        color: $text-white;
-        font-size: 20px;
-        padding: 10px 15px;
+        color: #666;
+        font-size: 18px;
+        padding: 5px 15px;
       }
     }
 
     .btn {
       width: 100%;
-      background-color: #08202e;
+      height: 45px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       font-size: 16px;
-      color: aliceblue;
+      font-weight: 600;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
     }
 
-    .el-input {
-      :deep(.el-input__inner) {
-        color: #1b0101ec;
+    :deep(.el-form-item) {
+      margin-bottom: 24px;
+    }
+
+    :deep(.el-input__wrapper) {
+      background: rgba(240, 242, 245, 0.8);
+      border-radius: 8px;
+      box-shadow: none;
+      padding: 8px 15px;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: rgba(240, 242, 245, 1);
       }
+      
+      &.is-focus {
+        background: #fff;
+        box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+      }
+    }
+
+    :deep(.el-input__inner) {
+      color: #333;
+      font-size: 14px;
+    }
+
+    :deep(.el-input__prefix) {
+      color: #667eea;
     }
   }
 }

@@ -5,6 +5,12 @@ import {
   Platform,
   Lock,
   Goods,
+  HelpFilled,
+  ChromeFilled,
+  GoodsFilled,
+  Shop,
+  User,
+  Stamp
 } from '@element-plus/icons-vue'
 import { markRaw } from 'vue'
 
@@ -60,6 +66,7 @@ const routeData = [
             meta: {
               title: "权限管理",
               showInMenu: true,
+              icon: markRaw(Lock),
             }
           },
           {
@@ -69,6 +76,7 @@ const routeData = [
             meta: {
               title: "用户管理",
               showInMenu: true,
+              icon: markRaw(User),
             }
           },
           {
@@ -78,6 +86,7 @@ const routeData = [
             meta: {
               title: "角色管理",
               showInMenu: true,
+              icon: markRaw(Stamp),
             }
           }
         ]
@@ -99,6 +108,7 @@ const routeData = [
             meta: {
               title: "SPU管理",
               showInMenu: true,
+              icon: markRaw(ChromeFilled),
             }
           },
           {
@@ -108,6 +118,7 @@ const routeData = [
             meta: {
               title: "SKU管理",
               showInMenu: true,
+              icon: markRaw(Shop),
             }
           },
           {
@@ -117,15 +128,17 @@ const routeData = [
             meta: {
               title: "属性管理",
               showInMenu: true,
+              icon: markRaw(HelpFilled),
             }
           },
           {
-            name: "品牌管理",
+            name: "商品管理",
             path: "/goods/tradeMark",
             component: () => import('@/views/product/tradeMark/Index.vue'),
             meta: {
-              title: "品牌管理",
+              title: "商品管理",
               showInMenu: true,
+              icon: markRaw(GoodsFilled),
             }
           }
         ]

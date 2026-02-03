@@ -29,7 +29,7 @@ import Setting from './setting/Index.vue';
         align-items: center;
     }
     .right-part {
-       
+       margin-right: 20px;
     }
 }
 </style>

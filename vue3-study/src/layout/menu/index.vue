@@ -38,6 +38,7 @@
                         <!-- 菜单项 -->
                         <el-sub-menu :index="item.path"
                             v-if="item.children && item.children.length > 1 && item.meta.showInMenu !== false">
+                            
                             <!-- 菜单项标题 -->
                             <template #title>
                                 <!-- 菜单项图标 -->
@@ -48,7 +49,9 @@
                                 <span class="text-dancing">{{ item.meta.title }}</span>
                             </template>
                             <!-- 递归子菜单 -->
-                            <SideMenu :menuRoute="item.children"></SideMenu>
+                            <el-menu-item-group>
+                                <SideMenu :menuRoute="item.children"></SideMenu>
+                            </el-menu-item-group>
                         </el-sub-menu>
                     </template>
                 </el-menu>
@@ -86,15 +89,33 @@ function handClick(item: any) {
 
 <style lang="scss">
 .popper-class {
-        background-color: $navibar-bg-color;
-        }
-        .popper-class .el-menu--popup,
-        .popper-class .el-menu-item {
-            color: #fff !important;
-    }
+    background-color: $navibar-bg-color;
+}
+
+.popper-class .el-menu--popup,
+.popper-class .el-menu-item {
+    color: #fff !important;
+}
+
 .tac {
     .el-menu {
         border: none;
+    }
+    
+    // 子菜单缩进样式
+    .el-sub-menu .el-menu-item {
+        padding-left: 40px !important;
+        min-width: 200px;
+    }
+    
+    // 多层嵌套时的缩进
+    .el-sub-menu .el-sub-menu .el-menu-item {
+        padding-left: 60px !important;
+    }
+    
+    // 折叠状态下的子菜单项
+    .el-menu--collapse .el-sub-menu .el-menu-item {
+        padding-left: 10px !important;
     }
 }
 </style>
