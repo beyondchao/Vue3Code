@@ -120,11 +120,11 @@ const routeData = [
             }
           },
           {
-            name: "贸易管理",
-            path: "/goods/trade",
+            name: "品牌管理",
+            path: "/goods/tradeMark",
             component: () => import('@/views/product/tradeMark/Index.vue'),
             meta: {
-              title: "贸易管理",
+              title: "品牌管理",
               showInMenu: true,
             }
           }
