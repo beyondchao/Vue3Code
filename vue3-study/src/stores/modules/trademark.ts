@@ -1,35 +1,8 @@
 // 品牌管理 Pinia Store
 import { defineStore } from "pinia";
-import { reqTradeMarkList } from "@/api/product/trademark/Index";
+import { reqTradeMarkList, reqDeleteTradeMark, reqAddTradeMark } from "@/api/product/trademark/Index";
 import { ElMessage } from "element-plus";
-
-// 定义表格数据项类型
-export interface TradeMarkItem {
-    id: number;
-    index?: number;
-    title: string;       // 商品名称
-    cover: string;       // 商品标志/封面
-    category_id: number; // 分类ID
-    rating: number;      // 评分
-    sale_count: number;   // 销量
-    review_count: number;  // 评论数
-    min_price: number;      // 最低价格
-    stock: number;       // 库存
-    min_stock: number;    // 最低库存
-    status: number;      // 商品状态 0-下架 1-上架
-    ischecked?: number;  // 是否审核 0-未审核 1-已审核
-    create_time: string,    // 创建时间
-    category: category, // 分类信息
-}
-//定义品牌管理数据类型
-interface category {
-    id: number,
-    name: string,
-    status: number,
-    create_time: string,    // 创建时间
-    update_time: string,   // 更新时间
-    category_id: number,    // 分类ID
-}
+import type { TradeMarkItem } from "@/api/product/trademark/type";
 // 定义状态类型
 interface TradeMarkState {
     tableData: TradeMarkItem[];
@@ -60,7 +33,7 @@ export const useTradeMarkStore = defineStore("trademark", {
                 item.title.toLowerCase().includes(state.searchInput.toLowerCase())
             );
         },
-        
+
         // 根据标签页过滤数据
         filteredByTab: (state) => {
             let data = state.tableData;
@@ -99,13 +72,14 @@ export const useTradeMarkStore = defineStore("trademark", {
                     tab: this.activeTab,
                     categoryId: 2, // 示例分类ID，可根据需要修改
                 });
-                
+
                 if (res.msg === "ok" && res.data) {
                     // 处理数据，添加序号
-                    this.tableData = res.data.list.map((item: TradeMarkItem, index: number) => ({
+                    const list = res.data?.list ?? [];
+                    this.tableData = (list as TradeMarkItem[]).map((item, index) => ({
                         ...item,
                         index: (this.currentPage - 1) * this.pageSize + index + 1,
-                        ischecked: 0, // 默认未选中
+                        ischecked: 0,
                     }));
                     this.total = res.data.totalCount || 0;
                 } else {
@@ -180,10 +154,10 @@ export const useTradeMarkStore = defineStore("trademark", {
                 ElMessage.warning("请先选择要删除的商品");
                 return;
             }
-            
+
             try {
                 // TODO: 调用删除接口
-                // await reqDeleteTradeMark(selectedIds);
+                await reqDeleteTradeMark(selectedIds);
                 ElMessage.success(`成功删除 ${selectedIds.length} 个商品`);
                 await this.fetchTradeMarkList();
             } catch (error) {
@@ -196,7 +170,7 @@ export const useTradeMarkStore = defineStore("trademark", {
         async addTradeMark(data: Partial<TradeMarkItem>) {
             try {
                 // TODO: 调用新增接口
-                // await reqAddTradeMark(data);
+                await reqAddTradeMark(data);
                 ElMessage.success("新增商品成功");
                 await this.fetchTradeMarkList();
             } catch (error) {

@@ -21,7 +21,7 @@
         </div>
         <!-- 操作按钮 -->
         <div class="operate">
-            <el-button class="my-button" size="default" type="primary" :icon="Plus" @click="handleAdd">新增商品</el-button>
+            <el-button class="my-button" size="default" type="primary" :icon="Plus" @click="handleDdd">新增商品</el-button>
             <el-button 
                 class="add-button" 
                 size="default" 
@@ -34,13 +34,18 @@
             </el-button>
         </div>
     </div>
+    <OperateDialog :visible="dialogVisible" @update:visible="dialogVisible = $event" @save="handleSave"/>
 </template>
 
 <script setup lang="ts" name="tradeMarkOperate">
+import { ref } from 'vue'
 import { Plus, Delete, Search } from '@element-plus/icons-vue'
 import { useTradeMarkStore } from '@/stores/modules/trademark'
-import { ElMessageBox } from 'element-plus'
+import { ElMention, ElMessageBox } from 'element-plus'
+import OperateDialog from './OperateDialog.vue'
+import type { TradeMarkItem } from '@/api/product/trademark/type'
 
+let dialogVisible = ref(false)
 const tradeMarkStore = useTradeMarkStore()
 
 // 搜索
@@ -52,11 +57,30 @@ const handleSearch = () => {
 const handleReset = () => {
     tradeMarkStore.handleReset()
 }
-
+// 打开新增对话框
+const handleDdd = () => {
+    dialogVisible.value = true
+}
 // 新增商品
-const handleAdd = () => {
+const handleSave = async (data: Partial<TradeMarkItem>) => {
     // TODO: 打开新增对话框
-    console.log('新增商品')
+    try {
+        let res = await tradeMarkStore.addTradeMark(data)
+        console.log('添加商品成功:', res)
+        // dialogVisible.value = false
+        // ElMessageBox.alert('商品添加成功', '提示', {
+        //     confirmButtonText: '确定',
+        // })
+    } catch (error){
+        // 处理错误，例如显示错误消息
+        console.error('添加商品失败:', error)
+        ElMention.alert('添加商品失败，请重试', '错误', {
+            confirmButtonText: '确定',
+        })
+
+        return
+    }   
+    
 }
 
 // 批量删除
