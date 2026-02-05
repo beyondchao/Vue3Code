@@ -19,16 +19,19 @@
                 <el-button type="primary">添加用户</el-button>
                 <el-button type="danger">批量删除</el-button>
             </div>
-            <el-table 
-            type="expand" 
-            :data="tableData" 
-            :table-layout="tableLayout"
-            style="width: 100%"
-            class="user-table">
+            <el-table :data="tableData" style="width: 100%" class="user-table">
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column prop="username" label="用户名" width="120"></el-table-column>
-                <el-table-column prop="id" label="id" width="120"></el-table-column>
-                <el-table-column prop="role" label="所属角色" width="120">
+                <el-table-column prop="id" label="id"></el-table-column>
+                <el-table-column prop="username" label="用户名"></el-table-column>
+                <el-table-column prop="avatar" label="头像">
+                    <template #label>头像</template>
+                    <template #default="scope">
+                        <el-avatar :src="scope.row.avatar" size="default">
+                            <img :src="defaultPng" />
+                        </el-avatar>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="role" label="所属角色">
                     <template #default="scope">
                         <div>
                             <el-tag style="margin-right: 4px;">
@@ -37,14 +40,14 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="status" label="状态" width="100">
+                <el-table-column prop="status" label="状态">
                     <template #default="scope">
                         <el-tag v-if="scope.row.status === 1" type="success">启用</el-tag>
                         <el-tag v-else type="info">禁用</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column prop="create_time" label="创建时间" width="180"></el-table-column>
-                <el-table-column label="操作" width="150">
+                <el-table-column prop="create_time" label="创建时间"></el-table-column>
+                <el-table-column label="操作" width="150" align="center">
                     <template #default="scope">
                         <el-button size="small">编辑</el-button>
                         <el-button type="danger" size="small">删除</el-button>
@@ -74,8 +77,7 @@ const total = ref(0);
 let tableData = ref<UserItem[]>([]);
 // 搜索输入
 let inputText = ref('');
-const tableLayout = ref<TableInstance['tableLayout']>('fixed');
-
+let defaultPng = 'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png';
 // 搜索
 const handleSearch = () => {
     fetchUserList();
