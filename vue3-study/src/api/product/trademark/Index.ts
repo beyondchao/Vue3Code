@@ -1,6 +1,6 @@
 //品牌管理接口
 import request from '@/utils/request';
-import type { useGoodsTrademark, TradeMarkItem,CategoryResponseData } from './type';
+import type { useGoodsTrademark, TradeMarkItem, CategoryResponseData } from './type';
 // 获取品牌列表的接口
 //  GET /admin/product/baseTrademark/{page}/{limit}
 //  获取第1页 每页10条记录/

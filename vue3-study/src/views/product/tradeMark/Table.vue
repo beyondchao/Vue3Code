@@ -6,6 +6,7 @@
                 :data="tradeMarkStore.tableData" 
                 style="width: 100%" 
                 v-loading="tradeMarkStore.loading"
+                :fit="true"
                 @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" width="55" align="center" />
@@ -70,7 +71,8 @@
     </div>
 </template>
 <script setup lang="ts" name="tradeMarkTable">
-import { useTradeMarkStore, type TradeMarkItem } from '@/stores/modules/trademark'
+import { useTradeMarkStore,  } from '@/stores/modules/trademark'
+import type { TradeMarkItem } from '@/api/product/trademark/type'
 import { ElMessageBox } from 'element-plus'
 
 const tradeMarkStore = useTradeMarkStore()

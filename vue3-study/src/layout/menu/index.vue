@@ -5,9 +5,7 @@
             <el-col :span="24">
                 <!-- 菜单栏 -->
                 <el-menu :default-active="$route.path" class="el-menu-vertical-demo" active-text-color="#ffd04b"
-                    background-color="transparent" text-color="#fff" 
-                    popper-class="popper-class" :collapse="collapse"
-                    >
+                    background-color="transparent" text-color="#fff" popper-class="popper-class" :collapse="collapse">
                     <template v-for="(item, menuindex) in sideMenu" :key="menuindex">
                         <!-- 单独菜单项 -->
                         <el-menu-item :index="item.children[0].path"
@@ -19,7 +17,7 @@
                             </el-icon>
                             <template #title>
                                 <!-- 菜单项标题 -->
-                                
+
                                 <span class="text-dancing">{{ item.children[0].meta.title }}</span>
                             </template>
                         </el-menu-item>
@@ -38,7 +36,7 @@
                         <!-- 菜单项 -->
                         <el-sub-menu :index="item.path"
                             v-if="item.children && item.children.length > 1 && item.meta.showInMenu !== false">
-                            
+
                             <!-- 菜单项标题 -->
                             <template #title>
                                 <!-- 菜单项图标 -->
@@ -49,9 +47,7 @@
                                 <span class="text-dancing">{{ item.meta.title }}</span>
                             </template>
                             <!-- 递归子菜单 -->
-                            <el-menu-item-group>
-                                <SideMenu :menuRoute="item.children"></SideMenu>
-                            </el-menu-item-group>
+                            <SideMenu :menuRoute="item.children"></SideMenu>
                         </el-sub-menu>
                     </template>
                 </el-menu>
@@ -101,18 +97,18 @@ function handClick(item: any) {
     .el-menu {
         border: none;
     }
-    
+
     // 子菜单缩进样式
     .el-sub-menu .el-menu-item {
         padding-left: 40px !important;
         min-width: 200px;
     }
-    
+
     // 多层嵌套时的缩进
     .el-sub-menu .el-sub-menu .el-menu-item {
         padding-left: 60px !important;
     }
-    
+
     // 折叠状态下的子菜单项
     .el-menu--collapse .el-sub-menu .el-menu-item {
         padding-left: 10px !important;
@@ -121,7 +117,5 @@ function handClick(item: any) {
 </style>
 
 <style lang="scss" scoped>
-.view-menu {
-    
-}
+.view-menu {}
 </style>

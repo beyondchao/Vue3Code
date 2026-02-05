@@ -3,13 +3,8 @@
     <div class="operate-container">
         <!-- 商品搜索 -->
         <div class="search">
-            <el-input 
-                style="width: 240px" 
-                placeholder="请输入商品名称" 
-                v-model="tradeMarkStore.searchInput" 
-                clearable
-                @keyup.enter="handleSearch"
-            >
+            <el-input style="width: 240px" placeholder="请输入商品名称" v-model="tradeMarkStore.searchInput" clearable
+                @keyup.enter="handleSearch">
                 <template #prefix>
                     <el-icon>
                         <Search />
@@ -22,19 +17,13 @@
         <!-- 操作按钮 -->
         <div class="operate">
             <el-button class="my-button" size="default" type="primary" :icon="Plus" @click="handleDdd">新增商品</el-button>
-            <el-button 
-                class="add-button" 
-                size="default" 
-                type="danger" 
-                :icon="Delete" 
-                @click="handleBatchDelete"
-                :disabled="tradeMarkStore.selectedItems.length === 0"
-            >
+            <el-button class="add-button" size="default" type="danger" :icon="Delete" @click="handleBatchDelete"
+                :disabled="tradeMarkStore.selectedItems.length === 0">
                 批量删除
             </el-button>
         </div>
     </div>
-    <OperateDialog :visible="dialogVisible" @update:visible="dialogVisible = $event" @save="handleSave"/>
+    <OperateDialog :visible="dialogVisible" @update:visible="dialogVisible = $event" @save="handleSave" />
 </template>
 
 <script setup lang="ts" name="tradeMarkOperate">
@@ -71,7 +60,7 @@ const handleSave = async (data: Partial<TradeMarkItem>) => {
         // ElMessageBox.alert('商品添加成功', '提示', {
         //     confirmButtonText: '确定',
         // })
-    } catch (error){
+    } catch (error) {
         // 处理错误，例如显示错误消息
         console.error('添加商品失败:', error)
         ElMention.alert('添加商品失败，请重试', '错误', {
@@ -79,15 +68,15 @@ const handleSave = async (data: Partial<TradeMarkItem>) => {
         })
 
         return
-    }   
-    
+    }
+
 }
 
 // 批量删除
 const handleBatchDelete = async () => {
     const count = tradeMarkStore.selectedItems.length
     if (count === 0) return
-    
+
     try {
         await ElMessageBox.confirm(
             `确定要删除选中的 ${count} 个商品吗？`,
@@ -99,6 +88,12 @@ const handleBatchDelete = async () => {
             }
         )
         await tradeMarkStore.batchDelete()
+        // 删除后检查当前页是否还有数据，如果没有则跳转到上一页
+        let length = tradeMarkStore.tableData.length
+        if (length < 1 && tradeMarkStore.currentPage > 1) {
+            tradeMarkStore.currentPage = tradeMarkStore.currentPage - 1
+            tradeMarkStore.fetchTradeMarkList()
+        }
     } catch {
         // 用户取消删除
     }
@@ -107,19 +102,19 @@ const handleBatchDelete = async () => {
 
 <style scoped lang="scss">
 .operate-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+
+    .search {
         display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-        overflow: hidden;
-        white-space: nowrap;
-        .search {
-            display: flex;
-            align-items: center;
+        align-items: center;
 
-            .search-button {
-                margin-left: 10px;
-            }
+        .search-button {
+            margin-left: 10px;
         }
-    }   
-
+    }
+}
 </style>
